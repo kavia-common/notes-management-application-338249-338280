@@ -34,7 +34,9 @@ app = FastAPI(
 # Frontend can be configured via env; we keep permissive fallback for local dev.
 _frontend_url = os.environ.get("REACT_APP_FRONTEND_URL")
 _default_origins: List[str] = ["http://localhost:3000", "http://127.0.0.1:3000"]
-allow_origins = [_frontend_url] if _frontend_url else _default_origins + ["*"]
+# NOTE: When allow_credentials=True, a wildcard origin is not appropriate.
+# Keep a small, explicit allow-list for local dev and allow overriding via env.
+allow_origins = [_frontend_url] if _frontend_url else _default_origins
 
 app.add_middleware(
     CORSMiddleware,
