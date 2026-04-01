@@ -7,7 +7,7 @@ from __future__ import annotations
 from datetime import datetime
 from typing import List
 
-from sqlalchemy import DateTime, ForeignKey, Integer, String, Table, Text, func
+from sqlalchemy import Column, DateTime, ForeignKey, Integer, String, Table, Text, func
 from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column, relationship
 
 
@@ -18,8 +18,9 @@ class Base(DeclarativeBase):
 note_tags = Table(
     "note_tags",
     Base.metadata,
-    mapped_column("note_id", ForeignKey("notes.id"), primary_key=True),
-    mapped_column("tag_id", ForeignKey("tags.id"), primary_key=True),
+    # Table() requires SQLAlchemy Core Column objects (not ORM mapped_column).
+    Column("note_id", ForeignKey("notes.id"), primary_key=True),
+    Column("tag_id", ForeignKey("tags.id"), primary_key=True),
 )
 
 
